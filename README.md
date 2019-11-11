@@ -20,3 +20,5 @@ Este trabalho possui vários recursos da Linguagem Java, como:
 - Otávio Lima -> [lima300](https://github.com/lima300)
 - Otávio Resende -> [otavio-resende98](https://github.com/otavio-resende98)
 
+<h3>Baseado em:<h3> http://pld.cs.luc.edu/courses/271/spr17/labs/lab7/
+
