@@ -12,10 +12,10 @@ Este trabalho possui vários recursos da Linguagem Java, como:
 - Interface Gráfica (GUI's)
 - entre vários recursos
 
-Desenvolvedores:
+## Desenvolvedores:
 
-- Fábio Oliveira -> GitHub: FaBiUsKcomp
-- Kaio Vinícius -> GitHub: KaioVinicius54
-- Otávio Lima -> GitHub: lima300
-- Otávio Resende -> GitHub: otavio-resende58
+- Fábio Oliveira -> [FaBiUsKcomp](https://github.com/FaBiUsKcomp)
+- Kaio Vinícius -> [KaioVinicius](https://github.com/KaioVinicius54)
+- Otávio Lima -> [lima300](https://github.com/lima300)
+- Otávio Resende -> [otavio-resende98](https://github.com/otavio-resende98)
 
