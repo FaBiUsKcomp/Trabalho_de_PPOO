@@ -15,5 +15,7 @@ Este trabalho possui vários recursos da Linguagem Java, como:
 Desenvolvedores:
 
 - Fábio Oliveira -> GitHub: FaBiUsKcomp
-- Kaio Vinícius -> GitHub: 
+- Kaio Vinícius -> GitHub: KaioVinicius54
+- Otávio Lima -> GitHub: lima300
+- Otávio Resende -> GitHub: otavio-resende58
 
