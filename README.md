@@ -2,6 +2,7 @@
 
 Repositório destinado a implementação do Trabalho Final da Disciplina GCC-178 - PPOO (Práticas de Programação Orientada e Objetos)
 Desenvolvido na Linguagem Java.
+<i>O projeto basicamente se consiste em um jogo simples em que existe uma casa mal assombrada com vários comodos em que o objetivo é encontrar um tesouro em um dos comodos da mesma, uma vez que as portas podem estar emperradas e em que o jogador possui jogadas limitadas para cada entrada nas portas.Todo o algoritmo implementado funciona de forma Dinâmica e Aleatória, sendo que cada "Start" o tesouro e o número de jogadas é determinada pelo algoritmo.<i> 
 Este trabalho possui vários recursos da Linguagem Java, como:
 
 - Herança
