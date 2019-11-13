@@ -1,3 +1,5 @@
+import sun.jvm.hotspot.oops.ArgInfoData;
+
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
  *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
@@ -13,6 +15,9 @@
  * 
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author Modificado com o uso de Design de classes Por (Kaio Vinicius, Fábio Júnio, Otávio Lima, Otávio Resende)
+ * @version 2019.11.13
  */
 
 public class Jogo 
@@ -44,11 +49,15 @@ public class Jogo
         escritorio = new Ambiente("na sala de administracao dos computadores");
         
         // inicializa as saidas dos ambientes
-        fora.ajustarSaidas(null, anfiteatro, laboratorio, cantina);
-        anfiteatro.ajustarSaidas(null, null, null, fora);
-        cantina.ajustarSaidas(null, fora, null, null);
-        laboratorio.ajustarSaidas(fora, escritorio, null, null);
-        escritorio.ajustarSaidas(null, null, null, laboratorio);
+        fora.ajustarSaidas("leste", anfiteatro);
+        fora.ajustarSaidas("sul", laboratorio);
+        fora.ajustarSaidas("oeste", fora);
+        anfiteatro.ajustarSaidas("oeste", fora);
+        cantina.ajustarSaidas("leste", fora);
+        laboratorio.ajustarSaidas("norte", fora);
+        laboratorio.ajustarSaidas("leste", escritorio);
+        escritorio.ajustarSaidas("oeste", laboratorio);
+        sotao.ajustarSaidas("acima", anfiteatro);
 
         ambienteAtual = fora;  // o jogo comeca do lado de fora
     }
@@ -82,21 +91,14 @@ public class Jogo
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
         
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());
-    
-        System.out.print("Saidas: ");
-        if(ambienteAtual.saidaNorte != null) {
-            System.out.print("norte ");
-        }
-        if(ambienteAtual.saidaLeste != null) {
-            System.out.print("leste ");
-        }
-        if(ambienteAtual.saidaSul != null) {
-            System.out.print("sul ");
-        }
-        if(ambienteAtual.saidaOeste != null) {
-            System.out.print("oeste ");
-        }
+        imprimeLocalizacaoAtual();
+    }
+
+    /*Método que imprime/apresenta as saídas disponíveis do lugar em que se encontra o jogador*/
+    private void imprimeLocalizacaoAtual(){
+        System.out.println("Voce esta" + ambienteAtual.getDescricao());
+        System.out.println("Saidas: ");
+        System.out.print(ambienteAtual.getSaidas());
         System.out.println();
     }
 
@@ -120,6 +122,9 @@ public class Jogo
         }
         else if (palavraDeComando.equals("ir")) {
             irParaAmbiente(comando);
+        }
+        else if(palavraDeComando.equals("observar")){
+            observar();
         }
         else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
@@ -160,42 +165,19 @@ public class Jogo
 
         // Tenta sair do ambiente atual
         Ambiente proximoAmbiente = null;
-        if(direcao.equals("norte")) {
-            proximoAmbiente = ambienteAtual.saidaNorte;
-        }
-        if(direcao.equals("leste")) {
-            proximoAmbiente = ambienteAtual.saidaLeste;
-        }
-        if(direcao.equals("sul")) {
-            proximoAmbiente = ambienteAtual.saidaSul;
-        }
-        if(direcao.equals("oeste")) {
-            proximoAmbiente = ambienteAtual.saidaOeste;
-        }
+        proximoAmbiente = ambienteAtual.getAmbiente(direcao);
 
-        if (proximoAmbiente == null) {
-            System.out.println("Nao ha passagem!");
-        }
-        else {
+        if(proximoAmbiente == null){
+            System.out.println("Não há passagem!");
+        } else {
             ambienteAtual = proximoAmbiente;
-            
-            System.out.println("Voce esta " + ambienteAtual.getDescricao());
-            
-            System.out.print("Saidas: ");
-            if(ambienteAtual.saidaNorte != null) {
-                System.out.print("norte ");
-            }
-            if(ambienteAtual.saidaLeste != null) {
-                System.out.print("leste ");
-            }
-            if(ambienteAtual.saidaSul != null) {
-                System.out.print("sul ");
-            }
-            if(ambienteAtual.saidaOeste != null) {
-                System.out.print("oeste ");
-            }
-            System.out.println();
+            imprimeLocalizacaoAtual();
         }
+    }
+
+    /*Método observar*/
+    private void observar(){
+        imprimeLocalizacaoAtual();
     }
 
     /** 

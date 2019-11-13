@@ -12,14 +12,16 @@
  * 
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author Modificado com o uso de Design de classes Por (Kaio Vinicius, Fábio Júnio, Otávio Lima, Otávio Resende)
+ * @version 2019.11.13
  */
+
+import java.util.HashMap;
 public class Ambiente 
 {
     public String descricao;
-    public Ambiente saidaNorte;
-    public Ambiente saidaSul;
-    public Ambiente saidaLeste;
-    public Ambiente saidaOeste;
+    private HashMap<String, Ambiente> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -33,26 +35,18 @@ public class Ambiente
     public Ambiente(String descricao) 
     {
         this.descricao = descricao;
+        saidas = new HashMap<String, Ambiente>();
     }
 
     /**
      * Define as saidas do ambiente. Cada direcao ou leva a um
      * outro ambiente ou eh null (nenhuma saida para la).
-     * @param norte A saida norte.
-     * @param leste A saida leste.
-     * @param sul A saida sul.
-     * @param oeste A saida oeste.
+     * @param direcao Direção para onde jogador deseja ir.
+     * @param ambiente Ambiente desejado.
      */
-    public void ajustarSaidas(Ambiente norte, Ambiente leste, Ambiente sul, Ambiente oeste) 
+    public void ajustarSaidas(String direcao, Ambiente ambiente) 
     {
-        if(norte != null)
-            saidaNorte = norte;
-        if(leste != null)
-            saidaLeste = leste;
-        if(sul != null)
-            saidaSul = sul;
-        if(oeste != null)
-            saidaOeste = oeste;
+        saidas.put(direcao, ambiente);
     }
 
     /**
@@ -63,4 +57,11 @@ public class Ambiente
         return descricao;
     }
 
+    public String getSaidas(){
+        String direcoes = "";
+        for(String d : saidas.keySet()){
+            direcoes = direcoes + d + " ";
+        }
+        return direcoes;
+    }
 }

@@ -16,6 +16,9 @@ import java.util.Scanner;
  * 
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
+ * 
+ * @author Modificado com o uso de Design de classes Por (Kaio Vinicius, Fábio Júnio, Otávio Lima, Otávio Resende)
+ * @version 2019.11.13
  */
 public class Analisador 
 {
@@ -53,7 +56,7 @@ public class Analisador
                 // obs: nos simplesmente ignoramos o resto da linha.
             }
         }
-
+        tokenizer.close();
         // Agora verifica se esta palavra eh conhecida. Se for, cria um
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
         if(palavrasDeComando.ehComando(palavra1)) {
