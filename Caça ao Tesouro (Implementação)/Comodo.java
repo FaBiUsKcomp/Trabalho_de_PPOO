@@ -1,9 +1,12 @@
 import java.util.HashMap;
+import java.util.Random;
+
 public class Comodo 
 {
     public String nome;
     public String descricao;
-    private HashMap<String, Porta> saidas;
+    private HashMap<String, Comodo> saidas;
+    private Item item;
 
     /**
      * Cria um Comodo com a "descricao" passada. Inicialmente, ele
@@ -18,7 +21,8 @@ public class Comodo
     {
         this.nome = nome;
         descricao = "Você está no(a) " + nome + " da casa mal assombrada.";  
-        saidas = new HashMap<String, Porta>();
+        saidas = new HashMap<String, Comodo>();
+        item = null;
     }
 
     /**
@@ -27,9 +31,9 @@ public class Comodo
      * @param direcao Direção para onde jogador deseja ir.
      * @param comodo desejado.
      */
-    public void ajustarSaidas(String direcao, Porta comodo) 
+    public void ajustarSaidas(String nomeComodo, Comodo comodo) 
     {
-        saidas.put(direcao, comodo);
+        saidas.put(nomeComodo, comodo);
     }
 
     /**
@@ -49,12 +53,24 @@ public class Comodo
     }
 
     public Comodo getComodo(String nome){
-        Porta aux = saidas.get(nome);
-
-        return aux.getDestino();
+        return (Comodo)saidas.get(nome);
     }
     
     public String getNome(){
 		return nome;
-	}
+    }
+    
+    public boolean porta(){
+        Random r = new Random();
+        return r.nextBoolean();
+    }
+
+    public final void setItem(Item i){
+        item = i;
+    }
+
+    public Item getItem(){
+        return item;
+    }
+
 }

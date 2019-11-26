@@ -1,4 +1,10 @@
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
 
+import javax.sound.midi.Soundbank;
+import javax.sound.sampled.SourceDataLine;
+import javax.xml.bind.SchemaOutputResolver;
 
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
@@ -24,14 +30,28 @@ public class Jogo
 {
     private Analisador analisador;
     private Comodo comodoAtual;
+    private int tentativas;
+    private HashMap <Integer, Comodo> comodos;
+    private ChaveMestra chave;
+    private Tesouro tesouro;
+    private Dica dica1;
+    private Dica dica2;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
     public Jogo() 
     {
-        criarComodos();
+        
         analisador = new Analisador();
+        Random r = new Random();
+        tentativas = r.nextInt(31) + 20;
+        comodos = new HashMap<Integer, Comodo>();
+        chave = new ChaveMestra();
+        tesouro = new Tesouro();
+        criarComodos();
+        chave.espalhar(comodos);
+        tesouro.espalhar(comodos);
     }
 
     /**
@@ -55,70 +75,58 @@ public class Jogo
         banheiro1 = new Comodo("Banheiro1");
         banheiro2 = new Comodo("Banheiro2");
 
-        // inicializa portas 
+        // adcionar no hash map
 
-        Porta porta1, porta2, porta3, porta4, porta5, porta6, porta7, porta8, porta9, porta10, porta11, porta12,
-              porta13, porta14, porta15, porta16, porta17, porta18, porta19, porta20, porta21, porta22, porta23, porta24;
-        
-        porta1 = new Porta(escritorio);
-        porta2 = new Porta(salaJantar);
-        porta3 = new Porta(jardim);
-        salaTv.ajustarSaidas("Escritorio", porta1);
-        salaTv.ajustarSaidas("SalaJantar", porta2);
-        salaTv.ajustarSaidas("Jardim", porta3);
+        comodos.put(1, salaTv);
+        comodos.put(2, escritorio);
+        comodos.put(3, jardim);
+        comodos.put(4, cozinha);
+        comodos.put(5, salaJantar);
+        comodos.put(6, corredor);
+        comodos.put(7, quarto1);
+        comodos.put(8, quarto2);
+        comodos.put(9, quarto3);
+        comodos.put(10, quarto4);
+        comodos.put(11, banheiro1);
+        comodos.put(12, banheiro2);
 
-        porta4 = new Porta(salaTv);
-        escritorio.ajustarSaidas("SalaTv", porta4);
+        // ajustar saidas
 
-        porta5 = new Porta(salaTv);
-        porta6 = new Porta(cozinha);
-        porta7 = new Porta(corredor);
-        salaJantar.ajustarSaidas("SalaTv", porta5);
-        salaJantar.ajustarSaidas("Cozinha", porta6);
-        salaJantar.ajustarSaidas("Corredor", porta7);
+        salaTv.ajustarSaidas("Escritorio", escritorio);
+        salaTv.ajustarSaidas("SalaJantar", salaJantar);
+        salaTv.ajustarSaidas("Jardim", jardim);
 
-        porta8 = new Porta(salaJantar);
-        porta9 = new Porta(jardim);
-        cozinha.ajustarSaidas("SalaJantar", porta8);
-        cozinha.ajustarSaidas("Jardim", porta9);
+        salaJantar.ajustarSaidas("SalaTV", salaTv);
+        salaJantar.ajustarSaidas("Cozinha", cozinha);
+        salaJantar.ajustarSaidas("Corredor", corredor);
 
-        porta10 = new Porta(salaTv);
-        porta11 = new Porta(cozinha);
-        jardim.ajustarSaidas("SalaTv", porta10);
-        jardim.ajustarSaidas("Cozinha", porta11);
+        jardim.ajustarSaidas("Cozinha", cozinha);
+        jardim.ajustarSaidas("SalaTv", salaTv);
 
-        porta12 = new Porta(salaJantar);
-        porta13 = new Porta(quarto1);
-        porta14 = new Porta(quarto2);
-        porta15 = new Porta(quarto3);
-        porta16 = new Porta(quarto4);
-        porta17 = new Porta(banheiro1);
-        corredor.ajustarSaidas("SalaJantar", porta12);
-        corredor.ajustarSaidas("Quarto1", porta13);
-        corredor.ajustarSaidas("Quarto2", porta14);
-        corredor.ajustarSaidas("Quarto3", porta15);
-        corredor.ajustarSaidas("Quarto4", porta16);
-        corredor.ajustarSaidas("Banheiro1", porta17);
+        escritorio.ajustarSaidas("SalaTv", salaTv);
 
-        porta18 = new Porta(corredor);
-        quarto1.ajustarSaidas("Corredor", porta18);
+        cozinha.ajustarSaidas("Jardim", jardim);
+        cozinha.ajustarSaidas("SalaJantar", salaJantar);
 
-        porta19 = new Porta(corredor);
-        quarto2.ajustarSaidas("Corredor", porta19);
+        corredor.ajustarSaidas("Quarto1", quarto1);
+        corredor.ajustarSaidas("Quarto2", quarto2);
+        corredor.ajustarSaidas("Quarto3", quarto3);
+        corredor.ajustarSaidas("Quarto4", quarto4);
+        corredor.ajustarSaidas("Banheiro1", banheiro1);
+        corredor.ajustarSaidas("SalaJantar", salaJantar);
 
-        porta20 = new Porta(corredor);
-        porta24 = new Porta(banheiro2);
-        quarto3.ajustarSaidas("Corredor", porta20);
-        quarto3.ajustarSaidas("Banheiro2", porta24);
+        quarto1.ajustarSaidas("Corredor", corredor);
 
-        porta21 = new Porta(corredor);
-        quarto4.ajustarSaidas("Corredor", porta21);
+        quarto2.ajustarSaidas("Corredor", corredor);
 
-        porta22 = new Porta(corredor);
-        banheiro1.ajustarSaidas("Corredor", porta22);
+        quarto4.ajustarSaidas("Corredor", corredor);
 
-        porta23 = new Porta(quarto3);
-        banheiro2.ajustarSaidas("Quarto3", porta23);
+        banheiro1.ajustarSaidas("Corredor", corredor);
+
+        quarto3.ajustarSaidas("Corredor", corredor);
+        quarto3.ajustarSaidas("Banheiro2", banheiro2);
+
+        banheiro2.ajustarSaidas("Quarto3", quarto3);
 
         comodoAtual = salaTv;  // o jogo comeca do lado de fora
     }
@@ -134,9 +142,22 @@ public class Jogo
         // comandos e os executamos ate o jogo terminar.
                 
         boolean terminado = false;
-        while (! terminado) {
+        boolean explosao = false;
+        
+        while (! terminado && !explosao && temTentativas()) {
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
+            explosao = processarComando(comando);
+            if (!temTentativas()){
+                System.out.println("Game Over: tentativas esgotadas");
+            }
+            if(explosao){
+                if(tesouro.getEncontrado()){
+                    System.out.println("Você encontrou o tesouro!!!");
+                } else {
+                    System.out.println("Game Over: tesouro não encontrado");
+                }
+            }
         }
         System.out.println("Obrigado por jogar. Ate mais!");
     }
@@ -190,6 +211,9 @@ public class Jogo
         else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
         }
+        else if (palavraDeComando.equals("explodir")) {
+            querSair = explodir(comando);
+        }
 
         return querSair;
     }
@@ -204,10 +228,10 @@ public class Jogo
     private void imprimirAjuda() 
     {
         System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
+        System.out.println("pela casa mal assombrada.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
+        System.out.println("   ir sair ajuda explodir");
     }
 
     /** 
@@ -222,16 +246,42 @@ public class Jogo
             return;
         }
 
-        String direcao = comando.getSegundaPalavra();
+        String comodo = comando.getSegundaPalavra();
 
         // Tenta sair do Comodo atual
         Comodo proximoComodo = null;
-        proximoComodo = comodoAtual.getComodo(direcao);
+        proximoComodo = comodoAtual.getComodo(comodo);
 
         if(proximoComodo == null){
             System.out.println("Não há passagem!");
         } else {
-            comodoAtual = proximoComodo;
+            if (comodoAtual.getItem() != null){
+                if( comodoAtual.getItem() instanceof ChaveMestra){
+                    System.out.println("Parabens voce achou uma chave mestra!");
+                    chave.setEncontrado(true);
+                    
+                } else if ( comodoAtual.getItem() instanceof Dica) {
+                    if (comodoAtual.getItem() == dica1){
+                        System.out.println(dica1.getDescricao());
+                    } else {
+                        System.out.println(dica2.getDescricao());
+                    }
+                }
+                comodoAtual.setItem(null);
+            }
+            if (chave.getEncontrado()){
+                System.out.println("Deseja usar a chave mestra (sim/nao) ?");
+                Scanner ent = new Scanner(System.in);
+                String resp = ent.nextLine();
+                if (resp.equals("sim")){
+                    comodoAtual = proximoComodo;
+                } else {
+                irDireto(comodoAtual, proximoComodo);
+                }
+            } else {
+                irDireto(comodoAtual, proximoComodo);
+            
+            }
             imprimeLocalizacaoAtual();
         }
     }
@@ -256,4 +306,36 @@ public class Jogo
             return true;  // sinaliza que nos queremos sair
         }
     }
+
+    private boolean explodir(Comando comando) 
+    {
+        if(comando.temSegundaPalavra()) {
+            System.out.println("Explodir o que?");
+            return false;
+        }
+        else {
+            if(comodoAtual.getItem()!= null && comodoAtual.getItem() instanceof Tesouro){
+                tesouro.setEncontrado(true);
+            }
+            return true;  // sinaliza a explosao
+        }
+    }
+
+    private boolean temTentativas(){
+        return tentativas > 0 ? true : false;
+    }
+
+    private void irDireto(Comodo comodoAtual, Comodo proximoComodo){
+        if (temTentativas()){
+            boolean estadoPorta = comodoAtual.porta();
+            if (estadoPorta){
+                System.out.println("Porta funcionando corretamente");
+                comodoAtual = proximoComodo;
+            } else {
+                System.out.println("Porta emperrada !!");
+            }
+            tentativas--;
+        }
+    }
+
 }
