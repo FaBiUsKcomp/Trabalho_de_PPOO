@@ -2,10 +2,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.sound.midi.Soundbank;
-import javax.sound.sampled.SourceDataLine;
-import javax.xml.bind.SchemaOutputResolver;
-
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
  *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
@@ -58,7 +54,12 @@ public class Jogo
         dica2.setLocal(comodos);
         dica2.setDescricao((comodos.get(tesouro.getLocal())));
 
-       
+        System.out.println();
+        System.out.println("Chave " + chave.getLocal());
+        System.out.println("Dica1 " + dica1.getLocal());
+        System.out.println("Dica2 " + dica2.getLocal());
+        System.out.println("Tesouro " + tesouro.getLocal());
+        System.out.println();
     }
 
     /**
@@ -274,6 +275,7 @@ public class Jogo
                 String resp = ent.nextLine();
                 if (resp.equals("sim")){
                     comodoAtual = proximoComodo;
+                    chave.usarChave();
                 } else {
                     irDireto(proximoComodo);
                 }
@@ -316,6 +318,7 @@ public class Jogo
         else {
             if(comodoAtual.getItem()!= null && comodoAtual.getItem() instanceof Tesouro){
                 tesouro.setEncontrado(true);
+                System.out.println(tesouro.getEncontrado());
             }
             return true;  // sinaliza a explosao
         }
@@ -343,15 +346,16 @@ public class Jogo
             if(comodoAtual.getItem() instanceof ChaveMestra){
                 System.out.println("Parabens voce achou uma chave mestra!");
                 chave.setEncontrado(true);
-                
+                comodoAtual.setItem(null);               
             } else if (comodoAtual.getItem() instanceof Dica) {
                 if (comodoAtual.getItem() == dica1){
                     System.out.println(dica1.getDescricao());
                 } else {
                     System.out.println(dica2.getDescricao());
                 }
+                comodoAtual.setItem(null);
             }
-            comodoAtual.setItem(null);
+                
         }
     }
 }

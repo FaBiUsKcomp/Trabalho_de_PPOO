@@ -1,9 +1,9 @@
 import java.util.*;
 
-public abstract class Item {
+public class Item {
     private int local;
-    private boolean encontrado;
-
+    boolean encontrado;
+    
     public Item(){
         local = 0;
         encontrado = false;

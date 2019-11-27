@@ -15,4 +15,8 @@ public class ChaveMestra extends Item {
     public int getVidaUtil() {
         return vidaUtil;
     }
+
+    public void usarChave(){
+        vidaUtil--;
+    }
 }
