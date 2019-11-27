@@ -48,10 +48,17 @@ public class Jogo
         tentativas = r.nextInt(31) + 20;
         comodos = new HashMap<Integer, Comodo>();
         chave = new ChaveMestra();
-        tesouro = new Tesouro();
+        tesouro = new Tesouro(); 
+        dica1 = new Dica("O tesouro não está no(a)");
+        dica2 = new Dica("O tesouro está próximo ao(à)");
         criarComodos();
-        chave.espalhar(comodos);
-        tesouro.espalhar(comodos);
+        chave.setLocal(comodos);
+        tesouro.setLocal(comodos);
+        dica1.setDescricao(comodos);
+        dica2.setLocal(comodos);
+        dica2.setDescricao((comodos.get(tesouro.getLocal())));
+
+       
     }
 
     /**
@@ -129,6 +136,7 @@ public class Jogo
         banheiro2.ajustarSaidas("Quarto3", quarto3);
 
         comodoAtual = salaTv;  // o jogo comeca do lado de fora
+        verificaItem();
     }
 
     /**
@@ -144,10 +152,12 @@ public class Jogo
         boolean terminado = false;
         boolean explosao = false;
         
-        while (! terminado && !explosao && temTentativas()) {
+        while (!terminado && !explosao && temTentativas()) {
             Comando comando = analisador.pegarComando();
-            terminado = processarComando(comando);
             explosao = processarComando(comando);
+            if (!explosao){
+                terminado = processarComando(comando);
+            }
             if (!temTentativas()){
                 System.out.println("Game Over: tentativas esgotadas");
             }
@@ -182,6 +192,7 @@ public class Jogo
         System.out.println("Saidas: ");
         System.out.print(comodoAtual.getSaidas());
         System.out.println();
+        System.out.println(tentativas);
     }
 
     /**
@@ -248,6 +259,8 @@ public class Jogo
 
         String comodo = comando.getSegundaPalavra();
 
+        System.out.println(comodo); 
+
         // Tenta sair do Comodo atual
         Comodo proximoComodo = null;
         proximoComodo = comodoAtual.getComodo(comodo);
@@ -255,20 +268,6 @@ public class Jogo
         if(proximoComodo == null){
             System.out.println("Não há passagem!");
         } else {
-            if (comodoAtual.getItem() != null){
-                if( comodoAtual.getItem() instanceof ChaveMestra){
-                    System.out.println("Parabens voce achou uma chave mestra!");
-                    chave.setEncontrado(true);
-                    
-                } else if ( comodoAtual.getItem() instanceof Dica) {
-                    if (comodoAtual.getItem() == dica1){
-                        System.out.println(dica1.getDescricao());
-                    } else {
-                        System.out.println(dica2.getDescricao());
-                    }
-                }
-                comodoAtual.setItem(null);
-            }
             if (chave.getEncontrado()){
                 System.out.println("Deseja usar a chave mestra (sim/nao) ?");
                 Scanner ent = new Scanner(System.in);
@@ -276,13 +275,14 @@ public class Jogo
                 if (resp.equals("sim")){
                     comodoAtual = proximoComodo;
                 } else {
-                irDireto(comodoAtual, proximoComodo);
+                    irDireto(proximoComodo);
                 }
             } else {
-                irDireto(comodoAtual, proximoComodo);
-            
+                irDireto(proximoComodo);
             }
+
             imprimeLocalizacaoAtual();
+            verificaItem();
         }
     }
 
@@ -325,17 +325,33 @@ public class Jogo
         return tentativas > 0 ? true : false;
     }
 
-    private void irDireto(Comodo comodoAtual, Comodo proximoComodo){
+    private void irDireto(Comodo proximoComodo){
         if (temTentativas()){
             boolean estadoPorta = comodoAtual.porta();
             if (estadoPorta){
                 System.out.println("Porta funcionando corretamente");
                 comodoAtual = proximoComodo;
             } else {
-                System.out.println("Porta emperrada !!");
+                System.out.println("Porta emperrada !!!");
             }
             tentativas--;
         }
     }
 
+    private void verificaItem(){
+        if (comodoAtual.getItem() != null){
+            if(comodoAtual.getItem() instanceof ChaveMestra){
+                System.out.println("Parabens voce achou uma chave mestra!");
+                chave.setEncontrado(true);
+                
+            } else if (comodoAtual.getItem() instanceof Dica) {
+                if (comodoAtual.getItem() == dica1){
+                    System.out.println(dica1.getDescricao());
+                } else {
+                    System.out.println(dica2.getDescricao());
+                }
+            }
+            comodoAtual.setItem(null);
+        }
+    }
 }

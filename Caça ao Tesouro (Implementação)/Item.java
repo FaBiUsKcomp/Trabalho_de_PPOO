@@ -1,13 +1,23 @@
-import java.util.HashMap;
+import java.util.*;
 
-public class Item {
+public abstract class Item {
     private int local;
+    private boolean encontrado;
 
-    public Item(HashMap comodos){
-        local = espalhar(comodos);
+    public Item(){
+        local = 0;
+        encontrado = false;
     }
 
-    public int espalhar(HashMap comodos){
+    public void setEncontrado(boolean e){
+        encontrado = e;
+    }
+
+    public boolean getEncontrado(){
+        return encontrado;
+    }
+
+    private int espalhar(HashMap comodos){
         Random r = new Random();
         Integer sorteio = r.nextInt(comodos.size()) + 1;
 
@@ -21,6 +31,15 @@ public class Item {
 
         return sorteio;
 
+    }
+
+    public int setLocal(HashMap comodos){
+        local = espalhar(comodos);
+        return local;
+    }
+
+    public int getLocal(){
+        return local;
     }
 
 }

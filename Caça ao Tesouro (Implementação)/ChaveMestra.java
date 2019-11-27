@@ -1,15 +1,12 @@
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class ChaveMestra extends Item {
     private int vidaUtil;
-    private boolean encontrado;
 
-    public ChaveMestra(HashMap comodos){
-        super(comodos);
+    public ChaveMestra(){
+        super();
         Random r = new Random();
         vidaUtil = r.nextInt(12) + 1;
-        encontrado = false;
     }
 
     /**
@@ -18,16 +15,4 @@ public class ChaveMestra extends Item {
     public int getVidaUtil() {
         return vidaUtil;
     }
-
-    /**
-     * @param encontrado the encontrado to set
-     */
-    public final void setEncontrado(boolean encontrado) {
-        this.encontrado = encontrado;
-    }
-
-    public final boolean getEncontrado(){
-        return encontrado;
-    }
-
 }

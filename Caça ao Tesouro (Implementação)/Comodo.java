@@ -73,4 +73,8 @@ public class Comodo
         return item;
     }
 
+    public HashMap<String, Comodo> getComodos(){
+        return saidas;
+    }
+
 }

@@ -1,34 +1,27 @@
-import java.util.HashMap;
-import java.util.Random;
-public class Dica extends Item{
-    private String descricao;
-    private boolean encontrado;
+import java.util.*;
 
-    public Dica(String d, HashMap comodos){
-        super(comodos);
+public class Dica extends Item {
+    private String descricao;
+
+    public Dica(String d){
+        super();
         descricao = d;
-        encontrado = false;
     }
 
-    @Override
-    public int espalhar(HashMap comodos){
+    public void setDescricao(HashMap comodos){
+        Comodo c = (Comodo) comodos.get(setLocal(comodos));
+        descricao = descricao + " " + c.getNome();
+    }
+
+    public void setDescricao(Comodo comodo){
+        HashMap<String, Comodo> h = comodo.getComodos();
         Random r = new Random();
-        Integer sorteio = r.nextInt(comodos.size()) + 1;
-
-        Comodo c = (Comodo)comodos.get(sorteio);
-        while (c.getItem() != null){
-            sorteio = r.nextInt(comodos.size()+ 1);
-            c = (Comodo)comodos.get(sorteio);
-        }
-
-        c.setItem(this);
-        return sorteio;
+        int sorteio = r.nextInt(h.size());
+        ArrayList<Comodo> c = new ArrayList<Comodo>(h.values());
+        descricao = descricao + " " + (c.get(sorteio).getNome());
     }
 
     public String getDescricao(){
         return descricao;
     }
-
-    
-
 }
