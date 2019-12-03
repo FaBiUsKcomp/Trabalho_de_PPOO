@@ -17,7 +17,7 @@ public class Item {
         return encontrado;
     }
 
-    private int espalhar(HashMap comodos){
+    private int espalhar(HashMap<Integer, Comodo> comodos){
         Random r = new Random();
         Integer sorteio = r.nextInt(comodos.size()) + 1;
 
@@ -33,7 +33,7 @@ public class Item {
 
     }
 
-    public int setLocal(HashMap comodos){
+    public int setLocal(HashMap<Integer, Comodo> comodos){
         local = espalhar(comodos);
         return local;
     }
