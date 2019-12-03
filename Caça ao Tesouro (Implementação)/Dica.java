@@ -8,7 +8,7 @@ public class Dica extends Item {
         descricao = d;
     }
 
-    public void setDescricao(HashMap comodos){
+    public void setDescricao(HashMap<Integer, Comodo> comodos){
         Comodo c = (Comodo) comodos.get(setLocal(comodos));
         descricao = descricao + " " + c.getNome();
     }
