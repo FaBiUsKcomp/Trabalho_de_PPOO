@@ -1,5 +1,4 @@
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Comodo 
 {
@@ -28,7 +27,7 @@ public class Comodo
     /**
      * Define as saidas do Comodo. Cada direcao ou leva a um
      * outro Comodo ou eh null (nenhuma saida para la).
-     * @param direcao Direção para onde jogador deseja ir.
+     * @param nomeComodo Direção para onde jogador deseja ir.
      * @param comodo desejado.
      */
     public void ajustarSaidas(String nomeComodo, Comodo comodo) 

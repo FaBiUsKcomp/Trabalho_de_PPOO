@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Item {
     private int local;
-    boolean encontrado;
+    private boolean encontrado;
     
     public Item(){
         local = 0;

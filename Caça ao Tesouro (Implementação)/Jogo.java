@@ -1,6 +1,5 @@
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
@@ -32,6 +31,7 @@ public class Jogo
     private Tesouro tesouro;
     private Dica dica1;
     private Dica dica2;
+    private Tela interfaceGrafica;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -47,6 +47,7 @@ public class Jogo
         tesouro = new Tesouro(); 
         dica1 = new Dica("O tesouro não está no(a)");
         dica2 = new Dica("O tesouro está próximo ao(à)");
+        interfaceGrafica = new Tela();
         criarComodos();
         chave.setLocal(comodos);
         tesouro.setLocal(comodos);
@@ -60,6 +61,9 @@ public class Jogo
         System.out.println("Dica2 " + dica2.getLocal());
         System.out.println("Tesouro " + tesouro.getLocal());
         System.out.println();
+
+        salvaDados("BancoDeDados");
+        interfaceGrafica.exibirTela();
     }
 
     /**
@@ -77,8 +81,8 @@ public class Jogo
         cozinha = new Comodo("Cozinha");
         corredor = new Comodo("Corredor");
         quarto1 = new Comodo("Quarto1");
-        quarto2 = new Comodo("Qaurto2");
-        quarto3 = new Comodo("Qaurto3");
+        quarto2 = new Comodo("Quarto2");
+        quarto3 = new Comodo("Quarto3");
         quarto4 = new Comodo("Quarto4");
         banheiro1 = new Comodo("Banheiro1");
         banheiro2 = new Comodo("Banheiro2");
@@ -151,23 +155,12 @@ public class Jogo
         // comandos e os executamos ate o jogo terminar.
                 
         boolean terminado = false;
-        boolean explosao = false;
         
-        while (!terminado && !explosao && temTentativas()) {
+        while (!terminado && temTentativas()) {
             Comando comando = analisador.pegarComando();
-            explosao = processarComando(comando);
-            if (!explosao){
-                terminado = processarComando(comando);
-            }
+            terminado = processarComando(comando);
             if (!temTentativas()){
                 System.out.println("Game Over: tentativas esgotadas");
-            }
-            if(explosao){
-                if(tesouro.getEncontrado()){
-                    System.out.println("Você encontrou o tesouro!!!");
-                } else {
-                    System.out.println("Game Over: tesouro não encontrado");
-                }
             }
         }
         System.out.println("Obrigado por jogar. Ate mais!");
@@ -194,6 +187,9 @@ public class Jogo
         System.out.print(comodoAtual.getSaidas());
         System.out.println();
         System.out.println(tentativas);
+        if (chave.getEncontrado()){
+            System.out.println(chave.getVidaUtil());
+        }
     }
 
     /**
@@ -260,8 +256,6 @@ public class Jogo
 
         String comodo = comando.getSegundaPalavra();
 
-        System.out.println(comodo); 
-
         // Tenta sair do Comodo atual
         Comodo proximoComodo = null;
         proximoComodo = comodoAtual.getComodo(comodo);
@@ -269,7 +263,7 @@ public class Jogo
         if(proximoComodo == null){
             System.out.println("Não há passagem!");
         } else {
-            if (chave.getEncontrado()){
+            if (chave.getEncontrado() && chave.getVidaUtil() > 0){
                 System.out.println("Deseja usar a chave mestra (sim/nao) ?");
                 Scanner ent = new Scanner(System.in);
                 String resp = ent.nextLine();
@@ -318,10 +312,12 @@ public class Jogo
         else {
             if(comodoAtual.getItem()!= null && comodoAtual.getItem() instanceof Tesouro){
                 tesouro.setEncontrado(true);
-                System.out.println(tesouro.getEncontrado());
+                System.out.println(tesouro.getMensagem());
+            } else {
+                System.out.println("Game Over: tesouro não encontrado");
             }
-            return true;  // sinaliza a explosao
         }
+        return true;  // sinaliza a explosao
     }
 
     private boolean temTentativas(){
@@ -342,20 +338,36 @@ public class Jogo
     }
 
     private void verificaItem(){
-        if (comodoAtual.getItem() != null){
+        if (comodoAtual.getItem() != null && !comodoAtual.getItem().getEncontrado()){
             if(comodoAtual.getItem() instanceof ChaveMestra){
                 System.out.println("Parabens voce achou uma chave mestra!");
-                chave.setEncontrado(true);
-                comodoAtual.setItem(null);               
+                interfaceGrafica.setChave(chave.getVidaUtil());              
             } else if (comodoAtual.getItem() instanceof Dica) {
                 if (comodoAtual.getItem() == dica1){
                     System.out.println(dica1.getDescricao());
                 } else {
                     System.out.println(dica2.getDescricao());
                 }
-                comodoAtual.setItem(null);
             }
-                
+            (comodoAtual.getItem()).setEncontrado(true);   
         }
+    }
+
+    private void salvaDados(String nomeArquivo){
+        try{
+            FileWriter arquivo = new FileWriter(nomeArquivo);
+            arquivo.write("Posição da Chave: " + comodos.get(chave.getLocal()).getNome()  + "\n" +
+                           "Posicão da Dica (Não Esta): " + comodos.get(dica1.getLocal()).getNome() + "\n" + 
+                           "Posição da Dica (Esta próximo): " + comodos.get(dica2.getLocal()).getNome() + "\n" +
+                           "Posição do Tesouro: " + comodos.get(tesouro.getLocal()).getNome());
+            arquivo.close();
+        }
+        catch(IOException e){
+            System.out.println("Falha ao Salvar em Arquivo " + nomeArquivo);
+        }
+    }
+
+    public ChaveMestra getChaveMestra(){
+        return chave;
     }
 }
