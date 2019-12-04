@@ -31,7 +31,6 @@ public class Jogo
     private Tesouro tesouro;
     private Dica dica1;
     private Dica dica2;
-    private Tela interfaceGrafica;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -47,7 +46,6 @@ public class Jogo
         tesouro = new Tesouro(); 
         dica1 = new Dica("O tesouro não está no(a)");
         dica2 = new Dica("O tesouro está próximo ao(à)");
-        interfaceGrafica = new Tela();
         criarComodos();
         chave.setLocal(comodos);
         tesouro.setLocal(comodos);
@@ -63,7 +61,7 @@ public class Jogo
         System.out.println();
 
         salvaDados("BancoDeDados");
-        interfaceGrafica.exibirTela();
+        
     }
 
     /**
@@ -147,23 +145,11 @@ public class Jogo
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar() 
+    public void jogar(Comando comando) 
     {            
         imprimirBoasVindas();
 
-        // Entra no loop de comando principal. Aqui nos repetidamente lemos
-        // comandos e os executamos ate o jogo terminar.
-                
-        boolean terminado = false;
-        
-        while (!terminado && temTentativas()) {
-            Comando comando = analisador.pegarComando();
-            terminado = processarComando(comando);
-            if (!temTentativas()){
-                System.out.println("Game Over: tentativas esgotadas");
-            }
-        }
-        System.out.println("Obrigado por jogar. Ate mais!");
+        processarComando(comando);
     }
 
     /**
@@ -197,33 +183,31 @@ public class Jogo
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
-    private boolean processarComando(Comando comando) 
+    private void processarComando(Comando comando) 
     {
-        boolean querSair = false;
 
         if(comando.ehDesconhecido()) {
             System.out.println("Eu nao entendi o que voce disse...");
-            return false;
-        }
+        } else {
 
-        String palavraDeComando = comando.getPalavraDeComando();
-        if (palavraDeComando.equals("ajuda")) {
-            imprimirAjuda();
-        }
-        else if (palavraDeComando.equals("ir")) {
-            irParaComodo(comando);
-        }
-        else if(palavraDeComando.equals("observar")){
-            observar();
-        }
-        else if (palavraDeComando.equals("sair")) {
-            querSair = sair(comando);
-        }
-        else if (palavraDeComando.equals("explodir")) {
-            querSair = explodir(comando);
-        }
+            String palavraDeComando = comando.getPalavraDeComando();
+            if (palavraDeComando.equals("ajuda")) {
+                imprimirAjuda();
+            }
+            else if (palavraDeComando.equals("ir")) {
+                irParaComodo(comando);
+            }
+            else if(palavraDeComando.equals("observar")){
+                observar();
+            }
+            else if (palavraDeComando.equals("sair")) {
+                System.exit(0);
+            }
+            else if (palavraDeComando.equals("explodir")) {
+                //querSair = explodir(comando);
+            }
 
-        return querSair;
+        }
     }
 
     // Implementacoes dos comandos do usuario
@@ -340,8 +324,7 @@ public class Jogo
     private void verificaItem(){
         if (comodoAtual.getItem() != null && !comodoAtual.getItem().getEncontrado()){
             if(comodoAtual.getItem() instanceof ChaveMestra){
-                System.out.println("Parabens voce achou uma chave mestra!");
-                interfaceGrafica.setChave(chave.getVidaUtil());              
+                System.out.println("Parabens voce achou uma chave mestra!");             
             } else if (comodoAtual.getItem() instanceof Dica) {
                 if (comodoAtual.getItem() == dica1){
                     System.out.println(dica1.getDescricao());

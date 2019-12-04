@@ -1,7 +1,9 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.KeyEvent;
+
 
 public class Tela {
 
@@ -26,16 +28,24 @@ public class Tela {
 	private JLabel textoBemVindo;
 	private JLabel textoInformaJogo;
 	private JLabel textoAjuda;
+	private JTextField entradaDeDados;
+	
+	private String comandoAtual;
+
+	private Analisador analisador;
+
+	private Jogo jogo;
 
 	/*Construtor da Interface Gráfica*/
-	public Tela(){
+	public Tela(Jogo j){
 		/*Parte esquerda Superior*/
 		telaPrincipal = new JFrame("Casa Mal Assombrada");
 		textoTentativas = new JLabel("<html><h2>Número de Tentativas Restantes:</h2></html>");
 		textoDurabilidadeChave = new JLabel("<html><h2> Durabilidade da chave mestra:</h2></html>");
 		quantidadeTentativas = new JLabel("<html><h2>35</h2></html>");
 		durabilidadeChaveTexto = new JLabel("<html><h2>8</h2></html>");
-
+		jogo = j;
+		analisador = new Analisador();
 		/*Parte central Superior*/
 		imagemCampo = new JLabel();
 		imagem = new ImageIcon(new ImageIcon("img/mapa-casa.png").getImage().getScaledInstance(650, 400, Image.SCALE_DEFAULT));
@@ -49,6 +59,17 @@ public class Tela {
 		textoBemVindo = new JLabel("Bem-Vindo ao Caça ao Tesouro!");
 		textoInformaJogo = new JLabel("Caça ao Tesouro é um novo jogo de aventura, incrivelmente bacana.");
 		textoAjuda = new JLabel("Digite 'ajuda' se você precisar de ajuda.");
+		entradaDeDados = new JTextField();
+		entradaDeDados.addKeyListener(new KeyAdapter(){
+			@Override
+    	public void keyPressed(KeyEvent evt) {
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+					Comando comando = analisador.pegarComando(entradaDeDados.getText());
+					jogo.jogar(comando);
+
+				}
+			}
+		});
 
 		montarTela();
 		telaPrincipal.pack();
@@ -111,6 +132,7 @@ public class Tela {
 		campoInferior.add(textoBemVindo);
 		campoInferior.add(textoInformaJogo);
 		campoInferior.add(textoAjuda);
+		campoInferior.add(entradaDeDados);
 
 		telaPrincipal.add(campoEsquerdoSuperior, BorderLayout.WEST);
 		telaPrincipal.add(campoCentralSuperior, BorderLayout.CENTER);
@@ -130,5 +152,13 @@ public class Tela {
 
 	public void setChave(int quant){
 		durabilidadeChaveTexto = new JLabel("<html><h2>" + quant +"</h2></html>");
+	}
+
+	public String getComandoAtual(){
+		return comandoAtual;
+	}
+
+	public void setComandoAtual(){
+		comandoAtual = "nenhum";
 	}
 }
