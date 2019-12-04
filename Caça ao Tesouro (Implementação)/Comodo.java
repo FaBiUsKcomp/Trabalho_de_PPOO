@@ -46,7 +46,7 @@ public class Comodo
     public String getSaidas(){
         String direcoes = "";
         for(String d : saidas.keySet()){
-            direcoes = direcoes + d + " ";
+            direcoes = direcoes + d + ", ";
         }
         return direcoes;
     }

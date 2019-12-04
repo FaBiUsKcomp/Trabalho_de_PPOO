@@ -64,6 +64,17 @@ public class Jogo
         
     }
 
+    public boolean verificaChave(){
+        return chave.getEncontrado();
+    }
+
+    public boolean verificaDica1(){
+        return dica1.getEncontrado();
+    }
+
+    public boolean verificaDica2(){
+        return dica2.getEncontrado();
+    }
     /**
      * Cria todos os Comodos e liga as saidas deles
      */
@@ -142,40 +153,24 @@ public class Jogo
         verificaItem();
     }
 
+    public int getTentativas(){
+        return tentativas;
+    }
+
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar(Comando comando) 
+    public String jogar(Comando comando) 
     {            
-        imprimirBoasVindas();
-
         processarComando(comando);
-    }
-
-    /**
-     * Imprime a mensagem de abertura para o jogador.
-     */
-    private void imprimirBoasVindas()
-    {
-        System.out.println();
-        System.out.println("Bem-vindo ao World of Zuul!");
-        System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
-        System.out.println();
-        
-        imprimeLocalizacaoAtual();
+        return obterLocalizacaoAtual();
     }
 
     /*Método que imprime/apresenta as saídas disponíveis do lugar em que se encontra o jogador*/
-    private void imprimeLocalizacaoAtual(){
-        System.out.println("Voce esta" + comodoAtual.getDescricao());
-        System.out.println("Saidas: ");
-        System.out.print(comodoAtual.getSaidas());
-        System.out.println();
-        System.out.println(tentativas);
-        if (chave.getEncontrado()){
-            System.out.println(chave.getVidaUtil());
-        }
+    private String obterLocalizacaoAtual(){
+
+        //Variavel que guarda a localização atual para interação com GUI
+        return "<html>" + comodoAtual.getDescricao() + "<br/>" + "Saidas: " + comodoAtual.getSaidas() + "</html>";
     }
 
     /**
@@ -261,14 +256,14 @@ public class Jogo
                 irDireto(proximoComodo);
             }
 
-            imprimeLocalizacaoAtual();
+            obterLocalizacaoAtual();
             verificaItem();
         }
     }
 
     /*Método observar*/
     private void observar(){
-        imprimeLocalizacaoAtual();
+        obterLocalizacaoAtual();
     }
 
     /** 
