@@ -50,11 +50,28 @@ public class Jogo
         dica2.setLocal(comodos);
         dica2.setDescricao((comodos.get(tesouro.getLocal())));
 
-        /*Salva dados em arquivo texto*/
+        System.out.println();
+        System.out.println("Chave " + chave.getLocal());
+        System.out.println("Dica1 " + dica1.getLocal());
+        System.out.println("Dica2 " + dica2.getLocal());
+        System.out.println("Tesouro " + tesouro.getLocal());
+        System.out.println();
+
         salvaDados("BancoDeDados");
         
     }
 
+    public boolean verificaChave(){
+        return chave.getEncontrado();
+    }
+
+    public boolean verificaDica1(){
+        return dica1.getEncontrado();
+    }
+
+    public boolean verificaDica2(){
+        return dica2.getEncontrado();
+    }
     /**
      * Cria todos os Comodos e liga as saidas deles
      */
@@ -143,9 +160,6 @@ public class Jogo
     public String jogar(Comando comando) 
     {            
         processarComando(comando);
-        if(getTentativas() == 0){
-            Tela.getInstance().sair("Número de Tentativas esgotadas");
-        }
         return obterLocalizacaoAtual();
     }
 
@@ -165,7 +179,7 @@ public class Jogo
     {
 
         if(comando.ehDesconhecido()) {
-            Tela.getInstance().setMensagem("Último status: Eu nao entendi o que voce disse...");
+            System.out.println("Eu nao entendi o que voce disse...");
         } else {
 
             String palavraDeComando = comando.getPalavraDeComando();
@@ -179,13 +193,10 @@ public class Jogo
                 observar();
             }
             else if (palavraDeComando.equals("sair")) {
-                boolean sair = sair(comando);
-                if(sair){
-                    System.exit(0);
-                }
+                System.exit(0);
             }
             else if (palavraDeComando.equals("explodir")) {
-                explodir(comando);
+                //querSair = explodir(comando);
             }
 
         }
@@ -200,19 +211,24 @@ public class Jogo
      */
     private void imprimirAjuda() 
     {
-        String frase = "<html>Você está perdido. Você está sozinho. Você caminha pela casa mal assombrada.<br/>Suas palavras de comando são:<br/>   ir sair ajuda explodir</html>";
-        Tela.getInstance().getAjuda(frase);
+        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
+        System.out.println("pela casa mal assombrada.");
+        System.out.println();
+        System.out.println("Suas palavras de comando sao:");
+        System.out.println("   ir sair ajuda explodir");
+        //return "<html>Voce esta perdido. Voce esta sozinho. Voce caminha pela casa mal assombrada.<br/>Suas palavras de comando sao:<br/>   ir sair ajuda explodir</html>";
     }
 
     /** 
      * Tenta ir em uma direcao. Se existe uma saida entra no 
      * novo Comodo, caso contrario imprime mensagem de erro.
      */
-    private void irParaComodo(Comando comando) 
+    private String irParaComodo(Comando comando) 
     {
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos pra onde ir...
-            Tela.getInstance().setMensagem("Último status: Ir pra onde?");
+            
+            return ("Ir pra onde?");
         }
 
         String comodo = comando.getSegundaPalavra();
@@ -222,21 +238,23 @@ public class Jogo
         proximoComodo = comodoAtual.getComodo(comodo);
 
         if(proximoComodo == null){
-            Tela.getInstance().setMensagem("Último status: Não há passagem!");
+            alteraTela("Nao ha passagem!");
         } else {
-            if (chave.getEncontrado() && chave.getVidaUtil() > 0){
-                String resp = Tela.getInstance().verificaChave("Deseja usar a chave mestra?");
-                System.out.println(resp);
+            /*if (chave.getEncontrado() && chave.getVidaUtil() > 0){
+                System.out.println("Deseja usar a chave mestra (sim/nao) ?");
+                Scanner ent = new Scanner(System.in);
+                String resp = ent.nextLine();
                 if (resp.equals("sim")){
                     comodoAtual = proximoComodo;
                     chave.usarChave();
-                    Tela.getInstance().setChave(chave.getVidaUtil());
                 } else {
                     irDireto(proximoComodo);
                 }
             } else {
                 irDireto(proximoComodo);
-            }
+            }*/
+            String path = irDireto(proximoComodo);
+
             obterLocalizacaoAtual();
             verificaItem();
         }
@@ -255,24 +273,26 @@ public class Jogo
     private boolean sair(Comando comando) 
     {
         if(comando.temSegundaPalavra()) {
-            Tela.getInstance().setMensagem("Último status: Sair o que?");
+            System.out.println("Sair o que?");
             return false;
         }
-        return true;  // sinaliza que nos queremos sair
+        else {
+            return true;  // sinaliza que nos queremos sair
+        }
     }
 
     private boolean explodir(Comando comando) 
     {
         if(comando.temSegundaPalavra()) {
-            Tela.getInstance().setMensagem("Último status: Explodir o que?");
+            System.out.println("Explodir o que?");
             return false;
         }
         else {
             if(comodoAtual.getItem()!= null && comodoAtual.getItem() instanceof Tesouro){
                 tesouro.setEncontrado(true);
-                Tela.getInstance().sair(tesouro.getMensagem());
+                System.out.println(tesouro.getMensagem());
             } else {
-                Tela.getInstance().sair("Game Over: tesouro não encontrado!");
+                System.out.println("Game Over: tesouro não encontrado!");
             }
         }
         return true;  // sinaliza a explosao
@@ -282,29 +302,29 @@ public class Jogo
         return tentativas > 0 ? true : false;
     }
 
-    private void irDireto(Comodo proximoComodo){
+    private String irDireto(Comodo proximoComodo){
         if (temTentativas()){
             boolean estadoPorta = comodoAtual.porta();
             tentativas--;
             if (estadoPorta){
-                comodoAtual = proximoComodo;
-                Tela.getInstance().setMensagem("Último status: Porta funcionando corretamente");
+                 comodoAtual = proximoComodo;
+                return ("Porta funcionando corretamente");
             } else {
-                Tela.getInstance().setMensagem("Último status: Porta emperrada !!!");
+                return ("Porta emperrada !!!");
             }
         }
+        return null;
     }
 
     private void verificaItem(){
         if (comodoAtual.getItem() != null && !comodoAtual.getItem().getEncontrado()){
             if(comodoAtual.getItem() instanceof ChaveMestra){
-                Tela.getInstance().setMensagem("Último status: Parabéns, você achou uma chave mestra!");
-                Tela.getInstance().setChave(chave.getVidaUtil());             
+                System.out.println("Parabens voce achou uma chave mestra!");             
             } else if (comodoAtual.getItem() instanceof Dica) {
                 if (comodoAtual.getItem() == dica1){
-                    Tela.getInstance().setDica1(dica1.getDescricao());
+                    System.out.println(dica1.getDescricao());
                 } else {
-                    Tela.getInstance().setDica2(dica2.getDescricao());
+                    System.out.println(dica2.getDescricao());
                 }
             }
             (comodoAtual.getItem()).setEncontrado(true);   

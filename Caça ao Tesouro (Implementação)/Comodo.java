@@ -1,5 +1,12 @@
 import java.util.*;
 
+/**
+ * Classe Reponsável por Controlar os Comodos da casa
+ * 
+ * @author Modificado com o uso de Design de classes Por (Kaio Vinicius, Fábio Júnio, Otávio Lima, Otávio Resende)
+ * @version 2019.11.13
+ */
+
 public class Comodo 
 {
     public String nome;

@@ -1,5 +1,12 @@
 import java.util.*;
 
+/**
+ * Classe Reponsável por Controlar as Dicas do Jogo
+ * 
+ * @author Modificado com o uso de Design de classes Por (Kaio Vinicius, Fábio Júnio, Otávio Lima, Otávio Resende)
+ * @version 2019.11.13
+ */
+
 public class Dica extends Item {
     private String descricao;
 
@@ -22,6 +29,6 @@ public class Dica extends Item {
     }
 
     public String getDescricao(){
-        return descricao;
+        return "<html><h2>" + descricao + "</h2></html>";
     }
 }
