@@ -134,15 +134,6 @@ public class Jogo
     }
 
     /**
-     * Método que retorna o numero de Tentativas que o Jogador ainda Possui
-     * 
-     * @return Inteiro referente ao numero de tentativas que o jogador possui
-     */
-    public int getTentativas(){
-        return tentativas;
-    }
-
-    /**
      * Rotina Principal do Jogo (Por onde o comando é processado)
      * 
      * @param comando Comando que originado da GUI
@@ -151,7 +142,7 @@ public class Jogo
     public String jogar(Comando comando) 
     {            
         processarComando(comando);
-        if(getTentativas() == 0){
+        if(!temTentativas()){
             Tela.getInstance().sair("Número de Tentativas esgotadas");
         }
         return obterLocalizacaoAtual();
