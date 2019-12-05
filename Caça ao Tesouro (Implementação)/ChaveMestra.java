@@ -9,6 +9,9 @@ import java.util.*;
 public class ChaveMestra extends Item {
     private int vidaUtil;
 
+    /**
+     * Contrutor da Classe Chave Mestra
+     */
     public ChaveMestra(){
         super();
         Random r = new Random();
@@ -20,8 +23,11 @@ public class ChaveMestra extends Item {
      */
     public int getVidaUtil() {
         return vidaUtil;
-    }
+    }   
 
+    /**
+     * Método que refere ao uso da Chave Mestra
+     */
     public void usarChave(){
         vidaUtil--;
     }

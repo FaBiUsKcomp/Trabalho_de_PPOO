@@ -50,6 +50,11 @@ public class Comodo
         return descricao;
     }
 
+    /**
+     * Método que retorna a lista de Saidas
+     * 
+     * @return String com todas as saídas de um comodo da casa.
+     */
     public String getSaidas(){
         String direcoes = "";
         for(String d : saidas.keySet()){
@@ -58,29 +63,59 @@ public class Comodo
         return direcoes;
     }
 
+    /**
+     * Método que retorna um comodo da casa
+     * 
+     * @param nome String que serve de chave para o retorno do Método
+     * @return Comodo resferente a chave do parâmetro.
+     */
     public Comodo getComodo(String nome){
         return (Comodo)saidas.get(nome);
     }
     
+    /**
+     * Método para retorna o nome do comodo
+     * 
+     * @return String que se refere ao nome do Comodo da casa.
+     */
     public String getNome(){
 		return nome;
     }
     
+    /**
+     * Método que configura o estado da Porta do comodo da casa
+     * 
+     * @return Booleano - estado atual da Porta (0/1)
+     */
     public boolean porta(){
         Random r = new Random();
         return r.nextBoolean();
     }
 
+    /**
+     * Método que seta o Item do comodo
+     * 
+     * @param i Item que é encontrado durante a execução do Jogo
+     */
     public final void setItem(Item i){
         item = i;
     }
 
+    /**
+     * Método que retorna o Item do Comodo
+     * 
+     * @return Item que está no comodo
+     */
     public Item getItem(){
         return item;
     }
 
+    /**
+     * Método que Retorna o Hash de Comodos da casa.
+     * 
+     * @return Hash de todos os comodos da casa
+     */
     public HashMap<String, Comodo> getComodos(){
         return saidas;
     }
-
 }

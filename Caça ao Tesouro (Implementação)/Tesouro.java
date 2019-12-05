@@ -14,7 +14,7 @@ public class Tesouro extends Item {
     
     /**
      * Método resposável por restornar a mensagem de tesouro encontrado
-     * @return String com a Descrição da Mensagem do Encontro do Tesouro
+     * @return String com a Descrição da Mensagem do Encontro do Tesouro.
      */
     public String getMensagem(){
         return "Você encontrou o tesouro!!!";

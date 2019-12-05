@@ -133,12 +133,20 @@ public class Jogo
         verificaItem();
     }
 
+    /**
+     * Método que retorna o numero de Tentativas que o Jogador ainda Possui
+     * 
+     * @return Inteiro referente ao numero de tentativas que o jogador possui
+     */
     public int getTentativas(){
         return tentativas;
     }
 
     /**
-     *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
+     * Rotina Principal do Jogo (Por onde o comando é processado)
+     * 
+     * @param comando Comando que originado da GUI
+     * @return String que se refere a localização atual no mapa da Casa
      */
     public String jogar(Comando comando) 
     {            
@@ -149,7 +157,11 @@ public class Jogo
         return obterLocalizacaoAtual();
     }
 
-    /*Método que imprime/apresenta as saídas disponíveis do lugar em que se encontra o jogador*/
+    /**
+     * Método que imprime/apresenta as saídas disponíveis do lugar em que se encontra o jogador*
+     * 
+     * @return String que refere a saidas disponiveis
+     */
     private String obterLocalizacaoAtual(){
 
         //Variavel que guarda a localização atual para interação com GUI
@@ -158,6 +170,7 @@ public class Jogo
 
     /**
      * Dado um comando, processa-o (ou seja, executa-o)
+     * 
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
@@ -278,10 +291,20 @@ public class Jogo
         return true;  // sinaliza a explosao
     }
 
+    /**
+     * Método para verificar se o jogador possui tentativas
+     * 
+     * @return Booleano verifica a atual situação do Jogador em relação a tentativas.
+     */
     private boolean temTentativas(){
         return tentativas > 0 ? true : false;
     }
 
+    /**
+     * Método para mudar que altera o comodo atual em que o jogador se encontra na casa
+     * 
+     * @param proximoComodo Comodo de destino que o jogador irá.
+     */
     private void irDireto(Comodo proximoComodo){
         if (temTentativas()){
             boolean estadoPorta = comodoAtual.porta();
@@ -295,6 +318,9 @@ public class Jogo
         }
     }
 
+    /**
+     * Método para verificar se o comodo tem item.
+     */
     private void verificaItem(){
         if (comodoAtual.getItem() != null && !comodoAtual.getItem().getEncontrado()){
             if(comodoAtual.getItem() instanceof ChaveMestra){
@@ -311,6 +337,11 @@ public class Jogo
         }
     }
 
+    /**
+     * Método para Salvar dados no Arquivo (Posições dos Itens)
+     * 
+     * @param nomeArquivo String que será o nome do Arquivo 
+     */
     private void salvaDados(String nomeArquivo){
         try{
             FileWriter arquivo = new FileWriter(nomeArquivo);
@@ -325,6 +356,11 @@ public class Jogo
         }
     }
 
+    /**
+     * Método para retornar Chave mestra
+     * 
+     * @return Chave mestra do jogo.
+     */
     public ChaveMestra getChaveMestra(){
         return chave;
     }

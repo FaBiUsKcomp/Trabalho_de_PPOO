@@ -59,11 +59,22 @@ public class Item {
 
     }
 
+    /**
+     * Método resposável por definir a posição do Item no mapa da casa.
+     * 
+     * @param comodos Hash de Comodos para servir na hora do sorteio.
+     * @return inteiro referente ao local do Item no mapa.
+     */
     public int setLocal(HashMap<Integer, Comodo> comodos){
         local = espalhar(comodos);
         return local;
     }
 
+    /**
+     * Método que retorna o local no Item
+     * 
+     * @return Inteiro referente ao local do Item na casa.
+     */
     public int getLocal(){
         return local;
     }
