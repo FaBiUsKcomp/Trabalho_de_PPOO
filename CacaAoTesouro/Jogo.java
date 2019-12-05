@@ -2,13 +2,13 @@ import java.util.*;
 import java.io.*;
 
 /**
- *  Essa eh a classe principal da aplicacao "World of Zull".
- *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
- *  Usuarios podem caminhar em um cenario. E eh tudo! Ele realmente
- *  precisa ser estendido para fazer algo interessante!
- * 
- *  Para jogar esse jogo, crie uma instancia dessa classe e chame o metodo
- *  "jogar".
+ *  Essa eh a classe principal da aplicacao "Caça ao Tesouro".
+ *  "Caça ao Tesouro "se consiste em um jogo simples em que existe uma casa mal 
+ *  assombrada com vários comodos em que o objetivo é encontrar
+ *  um tesouro em um dos comodos da mesma, uma vez que as portas 
+ *  podem estar emperradas e em que o jogador possui jogadas limitadas 
+ *  para cada entrada nas portas.
+ *  Esse jogo é baseado na Implementação do Jogo "World of Zuul"
  * 
  *  Essa classe principal cria e inicializa todas as outras: ela cria os
  *  Comodos, cria o analisador e comeca o jogo. Ela tambeme avalia e 

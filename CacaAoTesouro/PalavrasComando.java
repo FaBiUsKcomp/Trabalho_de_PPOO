@@ -1,6 +1,11 @@
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
+ * Essa eh a classe PalavrasComando da aplicacao "Caça ao Tesouro".
+ *  "Caça ao Tesouro "se consiste em um jogo simples em que existe uma casa mal 
+ *  assombrada com vários comodos em que o objetivo é encontrar
+ *  um tesouro em um dos comodos da mesma, uma vez que as portas 
+ *  podem estar emperradas e em que o jogador possui jogadas limitadas 
+ *  para cada entrada nas portas.
+ *  Esse jogo é baseado na Implementação do Jogo "World of Zuul"  
  * 
  * Essa classe guarda uma enumeracao de todos os comandos conhecidos do
  * jogo. Ela eh usada no reconhecimento de comandos como eles sao digitados.

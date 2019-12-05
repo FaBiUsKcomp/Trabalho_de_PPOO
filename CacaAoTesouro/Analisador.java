@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
- * Esse analisador le a entrada do usuario e tenta interpreta-la como um
- * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
- * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
- * o comando como um objeto da classe Comando.
+ * Essa eh a classe Analisador da aplicacao "Caça ao Tesouro".
+ *  "Caça ao Tesouro "se consiste em um jogo simples em que existe uma casa mal 
+ *  assombrada com vários comodos em que o objetivo é encontrar
+ *  um tesouro em um dos comodos da mesma, uma vez que as portas 
+ *  podem estar emperradas e em que o jogador possui jogadas limitadas 
+ *  para cada entrada nas portas.
+ *  Esse jogo é baseado na Implementação do Jogo "World of Zuul"
  *
  * O analisador tem um conjunto de palavras de comando conhecidas. Ele compara
  * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um
